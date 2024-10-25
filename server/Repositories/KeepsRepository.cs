@@ -1,6 +1,4 @@
 namespace keepr.Repositories;
-
-
 public class KeepsRepository
 {
     private readonly IDbConnection _db;
@@ -34,7 +32,6 @@ public class KeepsRepository
             creationData.Img,
             creatorId
 
-
         }).FirstOrDefault();
 
     }
@@ -53,7 +50,6 @@ public class KeepsRepository
         SELECT 
         keeps.*,
         accounts.*
-        
         FROM keeps
         JOIN accounts on keeps.creatorId = accounts.id;";
 

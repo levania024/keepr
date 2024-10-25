@@ -21,50 +21,66 @@ CREATE Table keeps (
     Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
 );
 
-CREATE TABLE vaults(
-   id int PRIMARY key AUTO_INCREMENT NOT NULL,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  name VARCHAR(255) NOT NULL,
-  description TEXT NOT NULL,
-  img TEXT NOT NULL,
-  isPrivate BOOLEAN NOT NULL,
-  creatorId VARCHAR(255) NOT NULL,
-  Foreign Key (creatorId) REFERENCES  accounts (id) on delete CASCADE
+CREATE TABLE vaults (
+    id int PRIMARY key AUTO_INCREMENT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    img TEXT NOT NULL,
+    isPrivate BOOLEAN NOT NULL,
+    creatorId VARCHAR(255) NOT NULL,
+    Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
 );
 
+CREATE Table vaultKeeps (
+    id int PRIMARY key AUTO_INCREMENT NOT NULL,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    keepId INT NOT NULL,
+    vaultId int not NULL,
+    creatorId VARCHAR(255) NOT NULL,
+    Foreign Key (keepId) REFERENCES keeps (id) on delete CASCADE,
+    Foreign Key (vaultId) REFERENCES vaults (id) on delete CASCADE,
+    Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
+);
+
+ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
 
 INSERT INTO
-    keeps (
+    vaults (
         name,
         description,
         img,
+        isPrivate,
         creatorId
     )
 VALUES (
         @name,
         @description,
+        @img,
+        @isPrivate,
         @creatorId
-    )
+    );
 
-SELECT accounts.* keeps.*,
-FROM keeps
-    JOIN accounts on keeps.`creatorId` = accounts.id
+SELECT vaults.*, accounts.*
+FROM vaults
+    JOIN accounts ON vaults.creatorId = accounts.id
 
 UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
 
 SELECT *
-FROM keeps
-    JOIN accounts on accounts.id = keeps.`creatorId`
+FROM vaults
+    JOIN accounts on accounts.id = vaults.creatorId
 WHERE
-    keepId = @keepId
+    vaults.id = @vaultId
 
-UPDATE keeps SET(
+UPDATE vaults SET(
     name = @name,
-    description = @description
+    description = @isPrivate
 )
 WHERE
     id = @keepId
 LIMIT 1
 
-DELETE FROM keeps WHERE id = @keepId LIMIT 1
+DELETE FROM vaults WHERE id = @vaultId LIMIT 1
