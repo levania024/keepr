@@ -3,6 +3,7 @@ using keepr.interfaces;
 
 namespace keepr.Models;
 
+// RETURN DATA 
 public class Keep : IRepoItem<int>
 {
     public int Id { get; set; }
@@ -14,7 +15,11 @@ public class Keep : IRepoItem<int>
     [MaxLength(1000)]
     public string Img { get; set; }
     public int Views { get; set; }
+
+    // RELATIONSHIP properties
     public string CreatorId { get; set; }
+    public int Kept { get; set; }
+    public Profile Creator { get; set; }
 }
 
 public class KeepCreationDTO
