@@ -65,4 +65,9 @@ public class KeepsService
         return keep;
     }
 
+    internal List<Keep> GetKeepsInPublicVault(int vaultId, string userId)
+    {
+      List<Keep> keeps = _keepsRepository.GetKeepsInPublicVault(vaultId);
+      return keeps;
+    }
 }

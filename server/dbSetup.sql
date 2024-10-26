@@ -48,24 +48,16 @@ CREATE Table vaultKeeps (
 ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
 
 INSERT INTO
-    vaults (
-        name,
-        description,
-        img,
-        isPrivate,
-        creatorId
-    )
-VALUES (
-        @name,
-        @description,
-        @img,
-        @isPrivate,
-        @creatorId
-    );
+vaultKeeps ( vaultId, keepId)
+VALUES ( @vaultId, @keepId, );
 
-SELECT vaults.*, accounts.*
-FROM vaults
-    JOIN accounts ON vaults.creatorId = accounts.id
+SELECT 
+keeps.*,
+vaultKeeps.*,
+accounts.*
+FROM vaultKeeps
+JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id;
+JOIN accounts ON vaultKeeps.creatorId = accounts.id
 
 UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
 
@@ -83,4 +75,6 @@ WHERE
     id = @keepId
 LIMIT 1
 
-DELETE FROM vaults WHERE id = @vaultId LIMIT 1
+DELETE FROM vaultKeeps WHERE id = @vaultkeepId LIMIT 1
+
+SELECT * FROM vaultKeeps WHERE id = @vaultkeepId
