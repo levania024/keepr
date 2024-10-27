@@ -9,13 +9,23 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: loadPage('HomePage')
+    component: loadPage('HomePage'),
   },
   {
     path: '/account',
     name: 'Account',
     component: loadPage('AccountPage'),
     beforeEnter: authGuard
+  },
+  {
+    path:'/modal/:keepId',
+    name: 'Modal',
+    component: loadPage('HomePage'),
+  },
+  {
+    path:'/profile',
+    name: 'Profile',
+    component: loadPage('ProfilePage'),
   }
 ]
 

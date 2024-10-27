@@ -1,5 +1,4 @@
 <script setup>
-import { keepsService } from '@/services/KeepsService.js';
 import { vaultsService } from '@/services/VaultsService.js';
 import Pop from '@/utils/Pop.js';
 import { ref } from 'vue';
@@ -12,20 +11,20 @@ const editableData = ref({
 })
 
 
-// async function createVault() {
-//     try {
-//         await vaultsService.createVault(editableData.value)
-//         editableData.value = {
-//             name: '',
-//             img: '',
-//             description: '',
-//             isPrivate: ''
-//         }
-//     }
-//     catch (error) {
-//         Pop.error(error);
-//     }
-// }
+async function createVault() {
+    try {
+        await vaultsService.createVault(editableData.value)
+        editableData.value = {
+            name: '',
+            img: '',
+            description: '',
+            isPrivate: ''
+        }
+    }
+    catch (error) {
+        Pop.error(error);
+    }
+}
 </script>
 
 

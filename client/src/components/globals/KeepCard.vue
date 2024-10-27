@@ -6,6 +6,7 @@ defineProps({ keepProp: { type: Keep, required: true } })
 </script>
 
 <template>
+    <RouterLink :to="{name: 'Modal', params:{keepId: keepProp.id}}" data-bs-toggle="modal" data-bs-target="#cardDetail">
         <div class="position-relative">
             <img :src="keepProp.img" class="card-img-top rounded shadow" :alt="keepProp.creator.name">
             <h5 class="m-2 text-light">{{ keepProp.name }}</h5>
@@ -13,6 +14,7 @@ defineProps({ keepProp: { type: Keep, required: true } })
                 <ProfileCard :profileProp="keepProp.creator" />
             </span>
         </div>
+    </RouterLink>
 </template>
 
 <style lang="scss" scoped>
