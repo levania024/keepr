@@ -1,3 +1,4 @@
+
 namespace keepr.Repositories;
 
 public class AccountsRepository
@@ -42,6 +43,19 @@ public class AccountsRepository
             WHERE id = @Id;";
     _db.Execute(sql, update);
     return update;
+  }
+
+  internal Profile Editaccount(Profile profile)
+  {
+    string sql = @"
+            UPDATE accounts
+            SET 
+              name = @Name,
+              picture = @Picture,
+              coverImg = @CoverImg
+            WHERE id = @Id;";
+    _db.Execute(sql, profile);
+    return profile;
   }
 }
 

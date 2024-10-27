@@ -1,3 +1,4 @@
+
 namespace keepr.Services;
 public class VaultsService
 {
@@ -52,5 +53,11 @@ public class VaultsService
         _vaultsRepository.DeleteVault(vaultId);
 
         return vault;
+    }
+
+    internal List<Vault> GetMyVault(string userId)
+    {
+        List<Vault> vaults = _vaultsRepository.GetMyVault(userId);
+        return vaults;
     }
 }

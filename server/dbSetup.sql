@@ -52,12 +52,12 @@ vaultKeeps ( vaultId, keepId)
 VALUES ( @vaultId, @keepId, );
 
 SELECT 
-keeps.*,
+vaults.*,
 vaultKeeps.*,
 accounts.*
-FROM vaultKeeps
-JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id;
-JOIN accounts ON vaultKeeps.creatorId = accounts.id
+FROM vaults
+JOIN vaultKeeps ON vaultKeeps.vaultId = vaults.id
+JOIN accounts ON vaults.creatorId = accounts.id;
 
 UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
 
@@ -77,4 +77,4 @@ LIMIT 1
 
 DELETE FROM vaultKeeps WHERE id = @vaultkeepId LIMIT 1
 
-SELECT * FROM vaultKeeps WHERE id = @vaultkeepId
+SELECT accounts.* FROM accounts WHERE accounts.id = id

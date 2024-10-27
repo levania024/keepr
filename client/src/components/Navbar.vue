@@ -1,8 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { loadState, saveState } from '../utils/Store.js';
 import Login from './Login.vue';
+import { AppState } from '@/AppState.js';
 
+const account = computed(() => AppState.account)
 const theme = ref(loadState('theme') || 'light')
 
 onMounted(() => {
@@ -18,10 +20,10 @@ function toggleTheme() {
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark px-3">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-page border border sticky-top px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="/img/cw-logo.png" height="45" />
+        <button class="btn btn-info rounded-5">Home</button>
       </div>
     </router-link>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -31,11 +33,20 @@ function toggleTheme() {
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
         <li>
-          <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
-            About
-          </router-link>
+          <div class="btn-group">
+            <button v-if="account" type="button" class="btn btn dropdown-toggle" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Create
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#keep">New Keep</a></li>
+              <hr class="dropdown-divider">
+              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#vault">New Vault</a></li>
+            </ul>
+          </div>
         </li>
       </ul>
+
       <!-- LOGIN COMPONENT HERE -->
       <div>
         <button class="btn text-light" @click="toggleTheme"

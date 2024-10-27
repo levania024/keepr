@@ -1,3 +1,4 @@
+
 namespace keepr.Repositories;
 
 public class VaultsRepository
@@ -46,9 +47,31 @@ public class VaultsRepository
         if (affectedRows > 1) throw new Exception($"{affectedRows} are affected");
     }
 
+    internal List<Vault> GetMyVault(string userId)
+    {
+        string sql = @"SELECT 
+        vaults.*,
+        vaultKeeps.*,
+        accounts.*
+        FROM vaults
+        JOIN vaultKeeps ON vaultKeeps.vaultId = vaults.id
+        JOIN accounts ON vaults.creatorId = accounts.id;";
+
+         List<Vault> vaults = _db.Query(sql, (Vault v, VaultKeep vk, Profile p) =>
+        {
+            v.CreatorId = v.CreatorId;
+            v.Id = vk.VaultId;
+            v.Creator = p;
+            return v;
+
+        }, new { userId }).ToList();
+        return vaults;
+    }
+
     internal Vault GetVaultById(int vaultId)
     {
-        string sql = @"SELECT *
+        string sql = @"
+        SELECT *
         FROM vaults
             JOIN accounts on accounts.id = vaults.creatorId
         WHERE
