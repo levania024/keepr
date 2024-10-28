@@ -1,5 +1,5 @@
-
 namespace keepr.Services;
+
 public class VaultsService
 {
     private readonly VaultsRepository _vaultsRepository;
@@ -25,8 +25,7 @@ public class VaultsService
     internal Vault GetVaultById(int vaultId, string userId)
     {
         Vault vault = _vaultsRepository.GetVaultById(vaultId);
-        if (vault == null) throw new Exception($"invalid Id: {vaultId}");
-        // if(vault.CreatorId != userId) throw new Exception();
+        if(vault.IsPrivate == true && vault.CreatorId !=userId) throw new Exception($"Invalid id:{vaultId}, vault is private");
         return vault;
     }
 
@@ -37,7 +36,7 @@ public class VaultsService
         if (vault.CreatorId != userId) throw new Exception($"invalid id: {vaultId}");
 
         vault.Name = creationData.Name ?? vault.Name;
-        vault.IsPrivate = !creationData.IsPrivate;
+        vault.IsPrivate = creationData.IsPrivate ?? vault.IsPrivate;
 
         _vaultsRepository.UpdateVault(vault);
 
@@ -62,9 +61,9 @@ public class VaultsService
     }
 
     internal List<Vault> GetUserVault(string profileId)
-    {
+    {   
         List<Vault> vaults = _vaultsRepository.GetUserVault(profileId);
-        return vaults;
+
+        return vaults.FindAll(vault => vault.IsPrivate == false || vault.CreatorId != profileId);
     }
 }
-

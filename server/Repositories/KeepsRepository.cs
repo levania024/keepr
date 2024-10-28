@@ -79,7 +79,7 @@ public class KeepsRepository
     }
 
 
-    internal List<VaultKeepKeeps> GetKeepsInPublicVault(int vaultId)
+    internal List<VaultKeepKeeps> GetKeepsInVault(int vaultId)
     {
         string sql = @"
         SELECT 
@@ -108,7 +108,8 @@ public class KeepsRepository
         keeps.*,
         accounts.*
         FROM keeps
-        JOIN accounts on keeps.creatorId = accounts.id;";
+        JOIN accounts on keeps.creatorId = accounts.id
+        WHERE keeps.creatorId = @profileId;";
 
         List<Keep> keeps = _db.Query(sql, (Keep k, Profile p) =>
         {

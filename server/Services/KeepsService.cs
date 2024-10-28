@@ -3,10 +3,12 @@ namespace keepr.Services;
 public class KeepsService
 {
     private readonly KeepsRepository _keepsRepository;
+    private readonly VaultsRepository _vaultsRepository;
 
-    public KeepsService(KeepsRepository keepsRepository)
+    public KeepsService(KeepsRepository keepsRepository, VaultsRepository vaultsRepository)
     {
         _keepsRepository = keepsRepository;
+        _vaultsRepository = vaultsRepository;
     }
 
     internal Keep CreateKeep(KeepCreationDTO creationData, string userId)
@@ -19,7 +21,6 @@ public class KeepsService
         List<Keep> keeps = _keepsRepository.GetAllKeeps();
         return keeps;
     }
-
 
     private Keep GetKeepById(int keepId)
     {
@@ -60,10 +61,20 @@ public class KeepsService
         return keep;
     }
 
-    internal List<VaultKeepKeeps> GetKeepsInPublicVault(int vaultId, string userId)
+    private Vault GetVaultById(int vaultId)
     {
-      List<VaultKeepKeeps> keeps = _keepsRepository.GetKeepsInPublicVault(vaultId);
-      return keeps;
+        Vault vault = _vaultsRepository.GetVaultById(vaultId);
+        if (vault == null) throw new Exception($"invalid Id: {vaultId}");
+
+        return vault;
+    }
+    internal List<VaultKeepKeeps> GetKeepsInVault(int vaultId, string userId)
+    {
+        Vault vault = GetVaultById(vaultId);
+    if (vault.IsPrivate == true && vault.CreatorId != userId) throw new Exception($"This vault: {vaultId} is private");
+        List<VaultKeepKeeps> keeps = _keepsRepository.GetKeepsInVault(vaultId);
+
+        return keeps;
     }
 
     internal List<Keep> GetUserKeep(string profileId)

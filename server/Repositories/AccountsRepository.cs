@@ -45,7 +45,7 @@ public class AccountsRepository
     return update;
   }
 
-  internal Profile Editaccount(Profile profile)
+  internal Profile EditAccount(Profile profile)
   {
     string sql = @"
             UPDATE accounts

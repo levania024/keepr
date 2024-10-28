@@ -13,7 +13,7 @@ public class Vault : IRepoItem<int>
     public string Description { get; set; }
     [MaxLength(1000)]
     public string Img { get; set; }
-    public bool IsPrivate { get; set; }
+    public bool? IsPrivate { get; set; }
     public string CreatorId { get; set; }
     public Profile Creator { get; set; }
 }
@@ -25,5 +25,5 @@ public class VaultCreationDTO
     public string Description { get; set; }
     [MaxLength(1000)]
     public string Img { get; set; }
-    public bool IsPrivate { get; set; }
+    public bool? IsPrivate { get; set; }
 }

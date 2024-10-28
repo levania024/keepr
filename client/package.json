@@ -13,11 +13,14 @@
     "@bcwdev/auth0provider-client": "0.1.12",
     "@mdi/font": "7.4.47",
     "@popperjs/core": "2.11.8",
+    "@yeger/vue-masonry-wall": "^5.0.16",
     "axios": "1.7.4",
     "bootstrap": "5.3.3",
     "socket.io-client": "4.7.5",
     "sweetalert2": "11.12.4",
     "vue": "^3.4.37",
+    "vue-masonry": "^0.16.0",
+    "vue-masonry-css": "^1.0.3",
     "vue-router": "^4.4.3"
   },
   "devDependencies": {

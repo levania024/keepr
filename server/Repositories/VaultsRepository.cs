@@ -1,4 +1,3 @@
-
 namespace keepr.Repositories;
 
 public class VaultsRepository
@@ -39,7 +38,6 @@ public class VaultsRepository
         }).FirstOrDefault();
     }
 
-
     internal void DeleteVault(int vaultId)
     {
         string sql = "DELETE FROM vaults WHERE id = @vaultId LIMIT 1;";
@@ -51,20 +49,17 @@ public class VaultsRepository
     {
         string sql = @"SELECT 
         vaults.*,
-        vaultKeeps.*,
         accounts.*
         FROM vaults
-        JOIN vaultKeeps ON vaultKeeps.vaultId = vaults.id
-        JOIN accounts ON vaults.creatorId = accounts.id;";
+        JOIN accounts ON vaults.creatorId = accounts.id
+        WHERE vaults.creatorId = @UserId;";
 
-        List<Vault> vaults = _db.Query(sql, (Vault v, VaultKeep vk, Profile p) =>
-       {
+        List<Vault> vaults = _db.Query(sql, (Vault v, Profile p) =>
+        {
            v.CreatorId = v.CreatorId;
-           v.Id = vk.VaultId;
            v.Creator = p;
            return v;
-
-       }, new { userId }).ToList();
+        }, new { userId }).ToList();
         return vaults;
     }
 
@@ -72,15 +67,15 @@ public class VaultsRepository
     {
         string sql = @"
         SELECT 
-        keeps.*,
+        vaults.*,
         accounts.*
-        FROM keeps
-        JOIN accounts on keeps.creatorId = accounts.id;";
+        FROM vaults
+        JOIN accounts on vaults.creatorId = accounts.id
+        WHERE vaults.creatorId = @profileId;";
 
         List<Vault> vaults = _db.Query(sql, (Vault k, Profile p) =>
         {
             k.Creator = p;
-
             return k;
         }, new { profileId }).ToList();
         return vaults;
@@ -91,9 +86,8 @@ public class VaultsRepository
         string sql = @"
         SELECT *
         FROM vaults
-            JOIN accounts on accounts.id = vaults.creatorId
-        WHERE
-            vaults.id = @vaultId;";
+        JOIN accounts on accounts.id = vaults.creatorId
+        WHERE vaults.id = @vaultId;";
 
         return _db.Query(sql, (Vault v, Profile p) =>
          {
@@ -103,11 +97,6 @@ public class VaultsRepository
          {
              vaultId
          }).FirstOrDefault();
-    }
-
-    internal Vault GetVaultById(int vaultId, string userId)
-    {
-        throw new NotImplementedException();
     }
 
     internal void UpdateVault(Vault vault)
@@ -125,4 +114,3 @@ public class VaultsRepository
         if (affectedRows > 1) throw new Exception($"{affectedRows} are affected");
     }
 }
-

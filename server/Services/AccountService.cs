@@ -45,6 +45,6 @@ public class AccountService
       profile.Picture = accountData.Picture ?? profile.Picture;
       profile.CoverImg = accountData.CoverImg ?? profile.CoverImg;
 
-      return _repo.Editaccount(profile);
+      return _repo.EditAccount(profile);
     }
 }

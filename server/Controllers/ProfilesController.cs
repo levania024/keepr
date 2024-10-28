@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace keepr.Controllers;
 
 [ApiController]
@@ -25,7 +23,7 @@ public class ProfilesController : ControllerBase
         try
         {
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-            Profile profile = _profilesService.GetUserProfile(profileId, userInfo.Id);
+            Profile profile = _profilesService.GetUserProfile(profileId, userInfo?.Id);
             return Ok(profile);
         }
         catch (Exception e)

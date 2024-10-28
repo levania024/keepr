@@ -79,12 +79,12 @@ public class VaultsController : ControllerBase
     }
 
     [HttpGet("{vaultId}/keeps")]
-    public async Task<ActionResult<List<VaultKeepKeeps>>> GetKeepsInPublicVault(int vaultId)
+    public async Task<ActionResult<List<VaultKeepKeeps>>> GetKeepsInVault(int vaultId)
     {
         try
         {
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-            List<VaultKeepKeeps> keep = _keepsService.GetKeepsInPublicVault(vaultId, userInfo?.Id);
+            List<VaultKeepKeeps> keep = _keepsService.GetKeepsInVault(vaultId, userInfo?.Id);
             return Ok(keep);
         }
         catch (Exception e)
