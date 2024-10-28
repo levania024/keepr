@@ -57,14 +57,32 @@ public class VaultsRepository
         JOIN vaultKeeps ON vaultKeeps.vaultId = vaults.id
         JOIN accounts ON vaults.creatorId = accounts.id;";
 
-         List<Vault> vaults = _db.Query(sql, (Vault v, VaultKeep vk, Profile p) =>
-        {
-            v.CreatorId = v.CreatorId;
-            v.Id = vk.VaultId;
-            v.Creator = p;
-            return v;
+        List<Vault> vaults = _db.Query(sql, (Vault v, VaultKeep vk, Profile p) =>
+       {
+           v.CreatorId = v.CreatorId;
+           v.Id = vk.VaultId;
+           v.Creator = p;
+           return v;
 
-        }, new { userId }).ToList();
+       }, new { userId }).ToList();
+        return vaults;
+    }
+
+    internal List<Vault> GetUserVault(string profileId)
+    {
+        string sql = @"
+        SELECT 
+        keeps.*,
+        accounts.*
+        FROM keeps
+        JOIN accounts on keeps.creatorId = accounts.id;";
+
+        List<Vault> vaults = _db.Query(sql, (Vault k, Profile p) =>
+        {
+            k.Creator = p;
+
+            return k;
+        }, new { profileId }).ToList();
         return vaults;
     }
 
@@ -85,6 +103,11 @@ public class VaultsRepository
          {
              vaultId
          }).FirstOrDefault();
+    }
+
+    internal Vault GetVaultById(int vaultId, string userId)
+    {
+        throw new NotImplementedException();
     }
 
     internal void UpdateVault(Vault vault)

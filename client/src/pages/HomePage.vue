@@ -19,7 +19,7 @@ async function getAllKeep() {
     await keepsService.getAllKeep()
   }
   catch (error) {
-    Pop.error(error);
+    Pop.error(error)
     logger.log(error)
   }
 }

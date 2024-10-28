@@ -45,6 +45,7 @@ CREATE Table vaultKeeps (
     Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
 );
 
+
 ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
 
 INSERT INTO
@@ -52,12 +53,11 @@ vaultKeeps ( vaultId, keepId)
 VALUES ( @vaultId, @keepId, );
 
 SELECT 
-vaults.*,
 vaultKeeps.*,
 accounts.*
-FROM vaults
-JOIN vaultKeeps ON vaultKeeps.vaultId = vaults.id
-JOIN accounts ON vaults.creatorId = accounts.id;
+FROM vaultKeeps
+JOIN accounts ON vaultKeeps.creatorId = accounts.id
+WHERE vaultKeeps.id = LAST_INSERT_ID();
 
 UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
 
@@ -75,6 +75,6 @@ WHERE
     id = @keepId
 LIMIT 1
 
-DELETE FROM vaultKeeps WHERE id = @vaultkeepId LIMIT 1
+DELETE FROM vaultKeeps WHERE id = @vaultKeepId LIMIT 1;
 
-SELECT accounts.* FROM accounts WHERE accounts.id = id
+SELECT * FROM accounts WHERE accounts.id = id

@@ -22,7 +22,6 @@ public class KeepsController : ControllerBase
             Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
             Keep keep = _keepsService.CreateKeep(creationData, userInfo.Id);
             return Ok(keep);
-
         }
         catch (Exception e)
         {
@@ -31,12 +30,11 @@ public class KeepsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Keep>>> GetAllKeeps()
+    public ActionResult<List<Keep>> GetAllKeeps()
     {
         try
         {
-            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-            List<Keep> keep = _keepsService.GetAllKeeps(userInfo?.Id);
+            List<Keep> keep = _keepsService.GetAllKeeps();
             return Ok(keep);
         }
         catch (Exception e)

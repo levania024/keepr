@@ -14,17 +14,12 @@ public class KeepsService
         return _keepsRepository.CreateKeep(creationData, userId);
     }
 
-    private List<Keep> GetAllKeeps()
+    internal List<Keep> GetAllKeeps()
     {
         List<Keep> keeps = _keepsRepository.GetAllKeeps();
         return keeps;
     }
 
-    internal List<Keep> GetAllKeeps(string userId)
-    {
-        List<Keep> keeps = GetAllKeeps();
-        return keeps.FindAll(keep => keep.CreatorId == userId);
-    }
 
     private Keep GetKeepById(int keepId)
     {
@@ -65,9 +60,15 @@ public class KeepsService
         return keep;
     }
 
-    internal List<Keep> GetKeepsInPublicVault(int vaultId, string userId)
+    internal List<VaultKeepKeeps> GetKeepsInPublicVault(int vaultId, string userId)
     {
-      List<Keep> keeps = _keepsRepository.GetKeepsInPublicVault(vaultId);
+      List<VaultKeepKeeps> keeps = _keepsRepository.GetKeepsInPublicVault(vaultId);
       return keeps;
+    }
+
+    internal List<Keep> GetUserKeep(string profileId)
+    {
+        List<Keep> keeps = _keepsRepository.GetUserKeep(profileId);
+        return keeps;
     }
 }

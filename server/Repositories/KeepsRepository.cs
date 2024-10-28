@@ -78,7 +78,8 @@ public class KeepsRepository
         return keep;
     }
 
-    internal List<Keep> GetKeepsInPublicVault(int vaultId)
+
+    internal List<VaultKeepKeeps> GetKeepsInPublicVault(int vaultId)
     {
         string sql = @"
         SELECT 
@@ -87,16 +88,35 @@ public class KeepsRepository
         accounts.*
         FROM vaultKeeps
         Join keeps ON keeps.id = vaultKeeps.keepId
-        Join accounts ON vaultKeeps.creatorId = accounts.id;";
+        Join accounts ON keeps.creatorId = accounts.id;";
 
-        List<Keep> keep = _db.Query(sql, (Keep k, VaultKeep vK, Profile p) =>
+        List<VaultKeepKeeps> keep = _db.Query(sql, (VaultKeepKeeps k, VaultKeepKeeps vK, Profile p) =>
         {
             k.Creator = p;
-            vK.CreatorId = k.CreatorId;
+            k.VaultKeepId = vK.Id;
+            
 
             return k;
         }, new { vaultId }).ToList();
         return keep;
+    }
+
+    internal List<Keep> GetUserKeep(string profileId)
+    {
+        string sql = @"
+        SELECT 
+        keeps.*,
+        accounts.*
+        FROM keeps
+        JOIN accounts on keeps.creatorId = accounts.id;";
+
+        List<Keep> keeps = _db.Query(sql, (Keep k, Profile p) =>
+        {
+            k.Creator = p;
+            
+            return k;
+        }, new{profileId}).ToList();
+        return keeps;
     }
 
     internal void UpdateKeep(Keep keep)

@@ -18,15 +18,15 @@ public class VaultKeepsRepository
         VALUES ( @VaultId, @KeepId,@creatorId);
 
         SELECT 
-        vaultKeeps.*, 
+        vaultKeeps.*,
         accounts.*
         FROM vaultKeeps
-        JOIN accounts ON vaultKeeps.creatorId = accounts.id;";
+        JOIN accounts ON vaultKeeps.creatorId = accounts.id
+        WHERE vaultKeeps.id = LAST_INSERT_ID();";
 
-        return _db.Query(sql, (VaultKeep v, Profile p) =>
+        return _db.Query(sql, (VaultKeep vk, Profile p) =>
         {
-
-            return v;
+            return vk;
         },
         new
         {
@@ -48,7 +48,7 @@ public class VaultKeepsRepository
     {
         string sql = @"SELECT * FROM vaultKeeps WHERE id = @vaultKeepId;";
 
-        VaultKeep vaultKeep = _db.Query(sql, new { vaultKeepId }).FirstOrDefault();
+        VaultKeep vaultKeep = _db.Query<VaultKeep>(sql, new { vaultKeepId }).FirstOrDefault();
         return vaultKeep;
     }
 }

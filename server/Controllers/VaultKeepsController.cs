@@ -1,4 +1,7 @@
 namespace keepr.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
 public class VaultKeepsController : ControllerBase
 {
     private readonly VaultKeepsService _vaultKeepsService;
@@ -27,8 +30,8 @@ public class VaultKeepsController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete("vaultKeepId")]
-    public async Task<ActionResult<VaultKeep>> DeleteVaultKeep(int vaultKeepId)
+    [HttpDelete("{vaultKeepId}")]
+    public async Task<ActionResult<string>> DeleteVaultKeep(int vaultKeepId)
     {
         try
         {
