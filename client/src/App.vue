@@ -12,6 +12,7 @@ import Navbar from './components/Navbar.vue';
   <main>
     <router-view />
   </main>
+
   <ModalWrapper modalId="keep" header="Add your keep">
     <CreateKeep/>
   </ModalWrapper>
@@ -19,7 +20,6 @@ import Navbar from './components/Navbar.vue';
   <ModalWrapper modalId="vault" header="Add your Vault">
     <CreateVault/>
   </ModalWrapper>
-  
 </template>
 
 <style lang="scss">

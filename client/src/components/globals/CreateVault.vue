@@ -10,9 +10,9 @@ const editableData = ref({
     isPrivate: ''
 })
 
-
 async function createVault() {
-    try {
+    try 
+    {
         await vaultsService.createVault(editableData.value)
         editableData.value = {
             name: '',

@@ -2,8 +2,14 @@
 import { computed } from 'vue';
 import { AppState } from '../AppState.js';
 import ProfileCard from '@/components/globals/ProfileCard.vue';
+import KeepCard from '@/components/globals/KeepCard.vue';
 
 const account = computed(() => AppState.account)
+const keeps = computed(() => AppState.keeps)
+
+// async function getMyVault(params) {
+  
+// }
 
 </script>
 
@@ -25,6 +31,11 @@ const account = computed(() => AppState.account)
         </div>
         <div>
           <h3>Keeps</h3>
+          <div class="container">
+            <div v-for="keep in keeps" :key="keep.id">
+            <KeepCard :keepProp="keep" />
+          </div>
+      </div>
         </div>
       </div>
     </div>
@@ -35,4 +46,8 @@ const account = computed(() => AppState.account)
 </template>
 
 <style scoped lang="scss">
+.grid-container {
+  columns: 300px;
+  column-gap: 1rem;
+}
 </style>

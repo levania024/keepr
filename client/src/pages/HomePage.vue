@@ -1,8 +1,7 @@
 <script setup>
 import { AppState } from '@/AppState.js';
-import CardDetail from '@/components/globals/CardDetail.vue';
 import KeepCard from '@/components/globals/KeepCard.vue';
-import ModalWrapper from '@/components/ModalWrapper.vue';
+import KeepModal from '@/components/globals/keepModal.vue';
 import { keepsService } from '@/services/KeepsService.js';
 import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
@@ -27,15 +26,19 @@ async function getAllKeep() {
 
 <template>
   <div class="container">
-    <ModalWrapper modalId="cardDetail">
-      <CardDetail />
-    </ModalWrapper>
-    <section class="row gap-3 mt-3">
-      <div v-for="keep in keeps" :key="keep.id" class="col-lg-3 col-md-6 mb-3">
+    <section class="grid-container mt-3">
+      <div v-for="keep in keeps" :key="keep.id">
         <KeepCard :keepProp="keep" />
       </div>
     </section>
+    <KeepModal/>
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.grid-container {
+  columns: 300px;
+  column-gap: 1rem;
+}
+
+</style>
