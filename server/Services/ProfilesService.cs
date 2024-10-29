@@ -10,10 +10,10 @@ public class ProfilesService
         _profilesRepository = profilesRepository;
     }
 
-    internal Profile GetUserProfile(string profileId, string userId)
+    internal Profile GetUserProfile(string profileId)
     {
         Profile profile = _profilesRepository.GetUserProfile(profileId);
-        if(profile.Id == userId) throw new Exception("not your profile");
+        // if(profile.Id != userId) throw new Exception("not your profile");
 
         return profile;
     }

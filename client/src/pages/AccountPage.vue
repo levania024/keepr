@@ -16,6 +16,11 @@ const keeps = computed(() => AppState.keeps)
 <template>
   <div class="about">
     <div v-if="account">
+      <div class="container">
+        <section class="row position-relative">
+        <img class="creatorImg rounded-4" :src="account.coverImg" :alt="account.name">
+      </section>
+      </div>
       <div class="text-center">
         <ProfileCard :profileProp="account" />
         <p>{{ account.name }}</p>
@@ -32,10 +37,12 @@ const keeps = computed(() => AppState.keeps)
         <div>
           <h3>Keeps</h3>
           <div class="container">
-            <div v-for="keep in keeps" :key="keep.id">
-            <KeepCard :keepProp="keep" />
+          <section class="grid-container mt-3">
+             <div v-for="keep in keeps" :key="keep.id">
+             <KeepCard :keepProp="keep" />
+            </div>
+          </section>
           </div>
-      </div>
         </div>
       </div>
     </div>
@@ -49,5 +56,11 @@ const keeps = computed(() => AppState.keeps)
 .grid-container {
   columns: 300px;
   column-gap: 1rem;
+}
+
+.creatorImg {
+  height: 40dvh;
+  object-fit: cover;
+  object-position: center;
 }
 </style>

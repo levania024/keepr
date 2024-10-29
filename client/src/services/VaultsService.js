@@ -5,6 +5,11 @@ import { Vault } from "@/models/Vault.js";
 
 class VaultsService
 {
+    async getUserVault(profileId) {
+      const response = await api.get(`api/profiles/${profileId}/vaults`)
+      logger.log('get user vaults', response.data)
+      AppState.vaults = response.data.map(vault => new Vault(vault))
+    }
     async getVaultById(vaultId) 
     {
        const response = await api.get(`api/vaults/${vaultId}`)

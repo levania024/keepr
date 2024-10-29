@@ -18,12 +18,11 @@ public class ProfilesController : ControllerBase
     }
 
     [HttpGet("{profileId}")]
-    public async Task<ActionResult<Profile>> GetUserProfile(string profileId)
+    public ActionResult<Profile> GetUserProfile(string profileId)
     {
         try
         {
-            Account userInfo = await _auth0Provider.GetUserInfoAsync<Account>(HttpContext);
-            Profile profile = _profilesService.GetUserProfile(profileId, userInfo?.Id);
+            Profile profile = _profilesService.GetUserProfile(profileId);
             return Ok(profile);
         }
         catch (Exception e)

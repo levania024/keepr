@@ -3,15 +3,28 @@ import { api } from "./AxiosService.js";
 import { AppState } from "@/AppState.js";
 import { Keep } from "@/models/Keep.js";
 
-class KeepsService{
+class KeepsService
+{
+  async getUserKeep(profileId) {
+    const response = await api.get(`api/profiles/${profileId}/keeps`)
+    logger.log('get user keeps', response.data)
+    AppState.keeps = response.data.map(keep => new Keep(keep))
+  }
+  async deleteKeep(keepId)
+  {
+    const response = await api.delete(`api/keeps/${keepId}`)
+    logger.log('delete keep', response.data)
+    const keepToDelete = AppState.keeps.findIndex(keep => keep.id == keepId)
+    AppState.keeps.splice(keepToDelete,1)
+  }
   setKeep(keepProp) 
-    {
-      AppState.activeKeep = keepProp
-    }
+  {
+    AppState.activeKeep = keepProp
+  }
   async getKeepById(keepId) 
   {
-    const response = await api.get(`api/keeps/${keepId}`)
-    logger.log('get keep', response.data)
+  const response = await api.get(`api/keeps/${keepId}`)
+  logger.log('get keep', response.data)
   }
 
   async createKeep(keepData) 
