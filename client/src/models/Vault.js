@@ -10,7 +10,7 @@ export class Vault{
         this.creatorId = data.creatorId
         this.createdAt = new Date(data.createdAt)
         this.updatedAt = new Date(data.updatedAt)
-        this.creator = new Profile(data.creator)
+        this.creator = data.creator ? new Profile(data.creator) : null
     }
 }
 

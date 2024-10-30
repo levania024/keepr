@@ -1,111 +1,83 @@
 <script setup>
 import { AppState } from '@/AppState.js';
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import ProfileCard from './ProfileCard.vue';
-import { useRoute, useRouter } from 'vue-router';
 import Pop from '@/utils/Pop.js';
-import { keepsService } from '@/services/KeepsService.js';
-import { logger } from '@/utils/Logger.js';
-import { Vault } from '@/models/Vault.js';
 import { Modal } from 'bootstrap';
 import { vaultKeepsService } from '@/services/VaultKeepsService.js';
 
 const keep = computed(() => AppState.activeKeep)
-// const vaultKeeps = computed(()=> AppState.vaulKeeps)
-// const profile = computed(() => AppState.profile)
-const account = computed(()=> AppState.account)
+const account = computed(() => AppState.account)
 // const route = useRoute()
-// const router = useRouter()
-
-// defineProps({ vaults: { type: Vault, required: true } })
-
-// onMounted(() => {
-//     getKeepById()
-// })
-
-// async function getKeepById() {
-//     try {
-//         await keepsService.getKeepById(route.params.keepId)
-//     }
-//     catch (error) {
-//         Pop.error(error);
-//         logger.log(error)
-//     }
-// }
+const vaults = computed(() => AppState.vaults)
 
 const vaultKeepData = ref({
-    vaultId: null,
-    keepId: null
+    vaultId: 0,
+    keepId: 0
 })
 
 async function createVaultKeep() {
     try {
-        vaultKeepData.value.keepId = AppState.activeKeep
-        vaultKeepData.value.vaultId = AppState.vault
+        vaultKeepData.value.keepId = AppState.activeKeep.id
         await vaultKeepsService.createVaultKeep(vaultKeepData.value)
+        vaultKeepData.value = {
+            vaultId: 0,
+            keepId: 0
+        }
 
-        //   Modal.getOrCreateInstance('#keepModal')
+        Modal.getOrCreateInstance('#keepModal').hide()
     }
     catch (error) {
         Pop.error(error);
     }
 }
-
 </script>
 
 <template>
     <div class="modal fade" id="keepModal" aria-hidden="true" aria-labelledby="keepModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div v-if="keep" class="modal-content">
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="d-flex">
-                            <section class="row order-1 order-0">
-                                <div class="col-lg-12 col-md-6">
-                                    <div>
-                                        <img :src="keep.img" class="img-fluid rounded-start" :alt="keep.creator.name">
-                                    </div>
-                                </div>
-                            </section>
-                            <section class="row order-0 order-1">
-                                <div class="col-lg-12 col-md-6">
-                                    <div class="mx-2">
-                                        <div class="text-center">
-                                            <i class="mdi mdi-eye-outline fs-4 me-3">{{ keep.views }}</i>
-                                            <i class="mdi mdi-alpha-k-box-outline fs-4 me-2">{{ keep.kept }}</i>
-                                        </div>
-                                        <div class="d-flex flex-column justify-content-center align-items-center">
-                                            <h5 class="marko-one">{{ keep.name }}</h5>
-                                            <p class="inter ms-5">{{ keep.description }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex ms-5 ">
-                                        <!-- <select name="name" required aria-label="select a keep"
-                                            class="form-select-plaintext">
-                                            <option selected :value="vault.id" disabled :key="vault.id"
-                                                v-for="vault in vaults"> {{ vault.name }}
-                                            </option>
-                                        </select> -->
+            <div v-if="keep" class="modal-content d-flex flex-row">
+                <section class="row">
+                    <div class="col-lg-6 order-1 order-0">
+                        <img :src="keep.img" class="img-fluid rounded-start" :alt="keep.creator.name">
+                    </div>
+                    <div class="col-lg-6 order-0 order-1">
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="text-center my-3">
+                                <i class="mdi mdi-eye-outline fs-4 me-3">{{ keep.views }}</i>
+                                <i class="mdi mdi-alpha-k-box-outline fs-4 me-2">{{ keep.kept }}</i>
+                            </div>
+                            <div class="my-5">
+                                <h5 class="marko-one text-center">{{ keep.name }}</h5>
+                                <p class="inter">{{ keep.description }}</p>
+                            </div>
+                        </div>
 
-                                        <a href="#" class="btn btn-secondary shadow mx-auto" role="button"
-                                            @click="createVaultKeep()">Save</a>
-
-                                        <RouterLink :to="{ name: 'Profile', params: { profileId: account.id } }"
-                                            :title="'Go to the profile page'">
-                                            <div class="d-flex align-items-center ms-auto p-2">
-                                                <ProfileCard :profileProp="account" />
-                                                <h5 class="marko-one mx-2 text-dark">{{ account.name }}</h5>
-                                            </div>
-                                        </RouterLink>
-                                    </div>
+                        <div class="d-flex align-items-end justify-content-center">
+                            <div class="col-md-6 mb-md-0">
+                                <select v-model="vaultKeepData.vaultId" class="form-select form-select-lg"
+                                    aria-label="select a keep" required>
+                                    <option selected disabled>Select a Vault</option>
+                                    <option v-for="vault in vaults" :key="vault.id" :value="vault.id">{{ vault.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <button class="btn btn-secondary shadow mx-2" @click="createVaultKeep()">Save</button>
+                            <RouterLink :to="{ name: 'Profile', params: { profileId: account?.id } }"
+                                :title="'Go to the profile page'">
+                                <div class="d-flex ms-3">
+                                    <ProfileCard :profileProp="account" />
+                                    <h5 class="marko-one mx-2 text-dark align-self-center">{{ account.name }}</h5>
                                 </div>
-                            </section>
+                            </RouterLink>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+
+</style>

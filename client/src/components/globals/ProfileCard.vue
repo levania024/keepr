@@ -1,14 +1,15 @@
 <script setup>
 import { Profile } from '@/models/Profile.js';
-defineProps({profileProp:{type:Profile, required:true}})
+defineProps({ profileProp: { type: Profile, required: true } })
 </script>
 
 <template>
-<img :src="profileProp.picture" :alt="profileProp.name">
+    <img :src="profileProp.picture" :alt="profileProp.name">
 </template>
 
 <style lang="scss" scoped>
-img{
+img {
+    height: 5dvh;
     width: 50px;
     border-radius: 50%;
     aspect-ratio: 1/1;

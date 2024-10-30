@@ -45,6 +45,8 @@ CREATE Table vaultKeeps (
     Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
 );
 
+DROP Table keeps
+
 ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
 
 INSERT INTO

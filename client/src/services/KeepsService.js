@@ -10,6 +10,7 @@ class KeepsService
     logger.log('get user keeps', response.data)
     AppState.keeps = response.data.map(keep => new Keep(keep))
   }
+
   async deleteKeep(keepId)
   {
     const response = await api.delete(`api/keeps/${keepId}`)
@@ -17,14 +18,17 @@ class KeepsService
     const keepToDelete = AppState.keeps.findIndex(keep => keep.id == keepId)
     AppState.keeps.splice(keepToDelete,1)
   }
+
   setKeep(keepProp) 
   {
     AppState.activeKeep = keepProp
   }
-  async getKeepById(keepId) 
+  
+  async getKeepById(vaultId) 
   {
-  const response = await api.get(`api/keeps/${keepId}`)
-  logger.log('get keep', response.data)
+    const response = await api.get(`api/vaults/${vaultId}/keeps`)
+    logger.log('get keep by id', response.data)
+    AppState.keeps = response.data.map(keep => new Keep(keep))
   }
 
   async createKeep(keepData) 
@@ -32,6 +36,7 @@ class KeepsService
     const response = await api.post("api/keeps", keepData)
     logger.log('create keep', response.data)
     const newKeep = new Keep(response.data)
+
     AppState.keeps.push(newKeep)
   }
 

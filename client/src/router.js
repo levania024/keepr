@@ -19,11 +19,6 @@ const routes = [
     beforeEnter: authGuard
   },
   {
-    path:'/modal/:keepId',
-    name: 'Modal',
-    component: loadPage('HomePage'),
-  },
-  {
     path:'/vault/:vaultId',
     name: 'Vault',
     component: loadPage('VaultPage'),

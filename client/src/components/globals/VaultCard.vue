@@ -1,19 +1,21 @@
 <script setup>
 import { Vault } from '@/models/Vault.js';
 
-const vaultProps = defineProps({ vaultProp: { type: Vault, required: true } })
+defineProps({ vaultProp: { type: Vault, required: true } })
 
 </script>
 
 
 <template>
-    <div class="position-relative">
-        <img :src="vaultProp.img" class="card-img-top rounded shadow" :alt="vaultProp.creator.name">
-        <h5 class="m-2 text-light fs-4 marko-one">{{ vaultProp.name }}</h5>
-        <span class="m-2">
-            <ProfileCard :profileProp="vaultProp.creator" />
-        </span>
-    </div>
+    <RouterLink :to="{ name: 'Vault', params: { vaultId: vaultProp.id } }">
+        <div class="position-relative">
+            <img :src="vaultProp.img" class="rounded shadow img-fluid" :alt="vaultProp.creator.name">
+            <h5 class="m-2 text-light fs-4 marko-one">{{ vaultProp.name }}</h5>
+            <span v-if="vaultProp.isPrivate">
+                <i class="mdi mdi-lock-outline fs-4"></i>
+            </span>
+        </div>
+    </RouterLink>
 </template>
 
 
@@ -28,5 +30,6 @@ span {
     position: absolute;
     bottom: 0;
     right: 0;
+    text-shadow: 1px 1px lightblue;
 }
 </style>
