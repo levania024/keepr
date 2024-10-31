@@ -19,6 +19,7 @@ async function deleteKeep() {
         if (!deleteKeep) return
         await keepsService.deleteKeep(keepProps.keepProp.id)
         Pop.toast(`${keepProps.keepProp.name} is deleted`)
+        
     }
     catch (error) {
         Pop.error(error);

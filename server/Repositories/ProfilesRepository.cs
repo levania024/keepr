@@ -13,7 +13,7 @@ public class ProfilesRepository
     {
         string sql = @"SELECT * FROM accounts WHERE accounts.id = @profileId;";
 
-        return _db.Query<Profile>(sql, new{profileId}).FirstOrDefault();
+        return _db.Query<Profile>(sql, new { profileId }).FirstOrDefault();
     }
 }
 

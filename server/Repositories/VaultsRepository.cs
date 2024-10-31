@@ -56,9 +56,9 @@ public class VaultsRepository
 
         List<Vault> vaults = _db.Query(sql, (Vault v, Profile p) =>
         {
-           v.CreatorId = v.CreatorId;
-           v.Creator = p;
-           return v;
+            v.CreatorId = v.CreatorId;
+            v.Creator = p;
+            return v;
         }, new { userId }).ToList();
         return vaults;
     }

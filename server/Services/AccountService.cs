@@ -36,15 +36,15 @@ public class AccountService
     return _repo.Edit(original);
   }
 
-    internal Profile EditAccount(string accountId, Account accountData)
-    {
-      Profile profile = GetAccount(accountId);
+  internal Profile EditAccount(string accountId, Account accountData)
+  {
+    Profile profile = GetAccount(accountId);
 
-      if(profile.Id != accountId) throw new Exception();
-      profile.Name = accountData.Name ?? profile.Name;
-      profile.Picture = accountData.Picture ?? profile.Picture;
-      profile.CoverImg = accountData.CoverImg ?? profile.CoverImg;
+    if (profile.Id != accountId) throw new Exception();
+    profile.Name = accountData.Name ?? profile.Name;
+    profile.Picture = accountData.Picture ?? profile.Picture;
+    profile.CoverImg = accountData.CoverImg ?? profile.CoverImg;
 
-      return _repo.EditAccount(profile);
-    }
+    return _repo.EditAccount(profile);
+  }
 }

@@ -14,16 +14,16 @@ public class VaultKeepsService
     internal VaultKeep CreateVaultKeep(VaultKeepCreationDTO creationData, string userId)
     {
         Vault vault = _vaultsRepository.GetVaultById(creationData.VaultId);
-        
-        if(vault.CreatorId != userId) throw new Exception("vault is private");
-        
+
+        if (vault.CreatorId != userId) throw new Exception("vault is private");
+
         return _vaultKeepsRepository.CreateVaultKeep(creationData, userId);
     }
 
     private VaultKeep GetVaultKeepById(int vaultKeepId)
     {
-        VaultKeep vaultKeep =_vaultKeepsRepository.GetVaultKeepById(vaultKeepId);
-        if(vaultKeep == null) throw new Exception($"invalid vault keep id:{vaultKeepId}");
+        VaultKeep vaultKeep = _vaultKeepsRepository.GetVaultKeepById(vaultKeepId);
+        if (vaultKeep == null) throw new Exception($"invalid vault keep id:{vaultKeepId}");
         return vaultKeep;
     }
 

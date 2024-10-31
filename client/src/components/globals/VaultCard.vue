@@ -23,7 +23,7 @@ defineProps({ vaultProp: { type: Vault, required: true } })
 h5 {
     position: absolute;
     bottom: 0;
-    text-shadow: 0px 0px var(--bs-light);
+    text-shadow: 1px 1px whitesmoke;
 }
 
 span {

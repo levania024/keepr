@@ -22,17 +22,10 @@ public class KeepsService
         return keeps;
     }
 
-    private Keep GetKeepById(int keepId)
+    internal Keep GetKeepById(int keepId)
     {
         Keep keep = _keepsRepository.GetKeepById(keepId);
         if (keep == null) throw new Exception($"invalid {keepId}");
-        return keep;
-    }
-
-    internal Keep GetKeepById(int keepId, string userId)
-    {
-        Keep keep = GetKeepById(keepId);
-
         return keep;
     }
 
@@ -40,7 +33,7 @@ public class KeepsService
     {
         Keep keep = GetKeepById(keepId);
 
-        if (keep.CreatorId != userId) throw new Exception($"invalid id: {keepId}");
+        if (keep.CreatorId != userId) throw new Exception($"Not your Keep to update");
 
         keep.Name = creationData.Name ?? keep.Name;
         keep.Description = creationData.Description ?? keep.Description;
@@ -71,7 +64,7 @@ public class KeepsService
     internal List<VaultKeepKeeps> GetKeepsInVault(int vaultId, string userId)
     {
         Vault vault = GetVaultById(vaultId);
-    if (vault.IsPrivate == true && vault.CreatorId != userId) throw new Exception($"This vault: {vaultId} is private");
+        if (vault.IsPrivate == true && vault.CreatorId != userId) throw new Exception($"This vault: {vaultId} is private");
         List<VaultKeepKeeps> keeps = _keepsRepository.GetKeepsInVault(vaultId);
 
         return keeps;

@@ -11,6 +11,7 @@ const vaults = computed(() => AppState.vaults)
 
 onMounted(() => {
   getMyVault()
+
 })
 
 async function getMyVault() {
@@ -21,6 +22,8 @@ async function getMyVault() {
     Pop.error(error);
   }
 }
+
+
 </script>
 
 <template>
@@ -46,7 +49,7 @@ async function getMyVault() {
           </div>
         </section>
         <div class="text-center">
-          <h3>{{ account.name }}</h3>
+          <h2>{{ account.name }}</h2>
           <p>{{ vaults.length }} vault |
             {{ keeps?.length }} keeps
           </p>
@@ -54,12 +57,12 @@ async function getMyVault() {
       </div>
       <div class="container">
         <section class="row g-4">
-          <h4>Vault</h4>
+          <h3>Vault</h3>
           <div v-for="vault in vaults" :key="vault.id" class="col-lg-3">
             <VaultCard :vaultProp="vault" />
           </div>
           <div class="col-lg-12">
-            <h4>Keep</h4>
+            <h3>Keep</h3>
             <section class="grid-container mt-3">
               <div v-for="keep in keeps" :key="keep.id">
                 <KeepCard :keepProp="keep" />
@@ -90,7 +93,7 @@ async function getMyVault() {
 .profileImg {
   position: absolute;
   bottom: 0;
-  height: 15dvh;
+  height: 10dvh;
   border-radius: 50%;
   aspect-ratio: 1/1;
   object-fit: cover;

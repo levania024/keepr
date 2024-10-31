@@ -10,7 +10,7 @@ class VaultKeepsService{
         logger.log('create a vault keep ', response.data)
         const newVaultKeep = new VaultKeep(response.data)
 
-        if(AppState.vault.id == newVaultKeep.vaultId){
+        if(AppState.vault?.id == newVaultKeep.vaultId){
             AppState.vaultKeeps.push(newVaultKeep)
         }
 

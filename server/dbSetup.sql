@@ -45,7 +45,7 @@ CREATE Table vaultKeeps (
     Foreign Key (creatorId) REFERENCES accounts (id) on delete CASCADE
 );
 
-DROP Table keeps
+DROP Table `keeps`
 
 ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
 
@@ -53,31 +53,34 @@ INSERT INTO
     vaultKeeps (vaultId, keepId, creatorId)
 VALUES (@VaultId, @KeepId, @creatorId);
 
-SELECT keeps.*,
- Count(vaultKeeps.keepId) AS kept,
-accounts.*
-FROM keeps
+SELECT keeps.*, Count(vaultKeeps.keepId) AS kept, accounts.*
+FROM
+    keeps
     JOIN accounts ON keeps.creatorId = accounts.id
     LEFT JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id
-    WHERE vaultKeeps.id = LAST_INSERT_ID();
-GROUP BY
-    keeps.id
+WHERE
+    vaultKeeps.id = LAST_INSERT_ID();
 
+GROUP BY keeps.id
 
-   SELECT 
-        vaultKeeps.*,
-        accounts.*
-        FROM vaultKeeps
-        JOIN accounts ON vaultKeeps.creatorId = accounts.id
-        WHERE vaultKeeps.id = LAST_INSERT_ID()
+SELECT vaultKeeps.*, accounts.*
+FROM vaultKeeps
+    JOIN accounts ON vaultKeeps.creatorId = accounts.id
+WHERE
+    vaultKeeps.id = LAST_INSERT_ID()
 
+SELECT vaultKeeps.*, Count(vaultKeeps.keepId) AS kept, accounts.*
+FROM vaultKeeps
+    JOIN accounts ON vaultKeeps.creatorId = accounts.id
+WHERE
+    vaultKeeps.id = LAST_INSERT_ID()
+Group By
+    vaultKeeps.id
 
-SELECT 
-        vaultKeeps.*, Count(vaultKeeps.keepId) AS kept,
-        accounts.*
-        FROM vaultKeeps
-        JOIN accounts ON vaultKeeps.creatorId = accounts.id
-        WHERE vaultKeeps.id = LAST_INSERT_ID()
-        Group By vaultKeeps.id
+UPDATE keeps SET kept = kept + 1 WHERE keeps.id = @keepId;
 
-        UPDATE vaultKeeps SET kept = kept + 1 WHERE vaultKeeps.id
+SELECT keeps.*, vaultKeeps.*, accounts.*
+FROM
+    vaultKeeps
+    Join keeps ON keeps.id = vaultKeeps.keepId
+    Join accounts ON keeps.creatorId = accounts.id;

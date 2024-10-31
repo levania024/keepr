@@ -18,7 +18,7 @@ async function createVault() {
             name: '',
             img: '',
             description: '',
-            isPrivate: ''
+            isPrivate: 'false'
         }
     }
     catch (error) {
@@ -51,7 +51,7 @@ async function createVault() {
         <div class="mb-3 text-end">
             <label for="floatingPlaintextInput" class="d-block">Private Vaults can only be seen by you</label>
             <input v-model="editableData.isPrivate" type="checkbox"
-                id="isPrivate"> <label for=""><b>Make Vault Private?</b></label>
+                id="isPrivate"> <label for="isPrivate"><b>Make Vault Private?</b></label>
         </div>
         <div class="text-end">
             <button class="btn btn-dark" type="submit">Create Vault</button>

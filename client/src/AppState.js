@@ -21,6 +21,8 @@ export const AppState = reactive({
       /** @type {import('./models/VaultKeep.js').VaultKeep[]} user info from the database*/
       myVaultKeep: [],
       /** @type {import('./models/Profile.js').Profile[]} user info from the database*/
-      profile: []
+      profile: [],
+       /** @type {import('./models/Profile.js').Profile} user info from the database*/
+       profiles: null
 })
 

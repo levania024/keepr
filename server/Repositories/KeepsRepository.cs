@@ -14,6 +14,7 @@ public class KeepsRepository
        INSERT INTO keeps(name,description,img,creatorId)
        VALUES(@Name,@Description,@Img,@creatorId);
 
+      
         SELECT 
         keeps.*,
         accounts.*
@@ -63,10 +64,10 @@ public class KeepsRepository
 
     internal Keep GetKeepById(int keepId)
     {
-        string sql = @"
-        UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
+       string sql = @"
+       UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
        SELECT * FROM keeps 
-       JOIN accounts on accounts.id = keeps.`creatorId`
+       JOIN accounts on accounts.id = keeps.creatorId
        WHERE keeps.id = @keepId;";
 
         Keep keep = _db.Query(sql, (Keep k, Profile p) =>
@@ -88,13 +89,14 @@ public class KeepsRepository
         accounts.*
         FROM vaultKeeps
         Join keeps ON keeps.id = vaultKeeps.keepId
-        Join accounts ON keeps.creatorId = accounts.id;";
+        Join accounts ON keeps.creatorId = accounts.id
+        WHERE vaultKeeps.vaultId  = @vaultId;";
 
         List<VaultKeepKeeps> keep = _db.Query(sql, (VaultKeepKeeps k, VaultKeepKeeps vK, Profile p) =>
         {
             k.Creator = p;
             k.VaultKeepId = vK.Id;
-            
+
 
             return k;
         }, new { vaultId }).ToList();
@@ -114,9 +116,9 @@ public class KeepsRepository
         List<Keep> keeps = _db.Query(sql, (Keep k, Profile p) =>
         {
             k.Creator = p;
-            
+
             return k;
-        }, new{profileId}).ToList();
+        }, new { profileId }).ToList();
         return keeps;
     }
 
@@ -131,7 +133,6 @@ public class KeepsRepository
 
         int affectedRows = _db.Execute(sql, keep);
         if (affectedRows > 1) throw new Exception($"{affectedRows} are affected");
-
     }
 }
 
