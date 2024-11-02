@@ -8,6 +8,8 @@ export const AppState = reactive({
   account: null,
    /** @type {import('./models/Keep.js').Keep[]} user info from the database*/
    keeps: [],
+    /** @type {import('./models/Keep.js').Keep[]} user info from the database*/
+    myKeeps: [],
     /** @type {import('./models/Keep.js').Keep} user info from the database*/
     activeKeep: null,
     /** @type {import('./models/Vault.js').Vault[]} user info from the database*/
@@ -18,6 +20,8 @@ export const AppState = reactive({
     vault: null,
      /** @type {import('./models/VaultKeep.js').VaultKeep[]} user info from the database*/
      vaultKeeps: [],
+       /** @type {import('./models/VaultKeep.js').VaultKeep} user info from the database*/
+       vaultKeep: null,
       /** @type {import('./models/VaultKeep.js').VaultKeep[]} user info from the database*/
       myVaultKeep: [],
       /** @type {import('./models/Profile.js').Profile[]} user info from the database*/

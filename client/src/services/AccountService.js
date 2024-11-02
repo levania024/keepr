@@ -8,7 +8,7 @@ class AccountService {
      const response = await api.put('/account', accountData)
      logger.log('edit account', response.data)
      const newAccount = new Account(response.data)
-     AppState.profile.push(newAccount)
+     AppState.account = newAccount
   }
 
   async getAccount() {

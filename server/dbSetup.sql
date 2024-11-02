@@ -47,7 +47,7 @@ CREATE Table vaultKeeps (
 
 DROP Table `keeps`
 
-ALTER Table vaults MODIFY isPrivate BOOLEAN DEFAULT false;
+ALTER Table vaults MODIFY isPrivate BOOLEAN NOT NULL DEFAULT false;
 
 INSERT INTO
     vaultKeeps (vaultId, keepId, creatorId)
@@ -84,3 +84,13 @@ FROM
     vaultKeeps
     Join keeps ON keeps.id = vaultKeeps.keepId
     Join accounts ON keeps.creatorId = accounts.id;
+
+SELECT keeps.*, COUNT(vaultKeeps.keepId) AS kept, accounts.*
+FROM
+    keeps
+    JOIN accounts on accounts.id = keeps.creatorId
+    LEFT JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id
+WHERE
+    keeps.id = @keepId
+GROUP BY
+    keeps.id;

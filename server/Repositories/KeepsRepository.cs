@@ -63,12 +63,19 @@ public class KeepsRepository
     }
 
     internal Keep GetKeepById(int keepId)
+
     {
-       string sql = @"
+        string sql = @"
        UPDATE keeps SET views = views + 1 WHERE keeps.id = @keepId;
-       SELECT * FROM keeps 
-       JOIN accounts on accounts.id = keeps.creatorId
-       WHERE keeps.id = @keepId;";
+
+        SELECT keeps.*, COUNT(vaultKeeps.keepId) AS kept, accounts.*
+        FROM
+        keeps
+        JOIN accounts on accounts.id = keeps.creatorId
+        LEFT JOIN vaultKeeps ON vaultKeeps.keepId = keeps.id
+        WHERE keeps.id = @keepId
+        GROUP BY
+        keeps.id;";
 
         Keep keep = _db.Query(sql, (Keep k, Profile p) =>
         {

@@ -28,11 +28,10 @@ async function getAllKeep() {
   <div class="container">
     <section class="grid-container mt-3">
       <div v-for="keep in keeps" :key="keep.id">
-        <KeepCard :keepProp="keep" />
+        <KeepCard :keepProp="keep" buttonType="save" />
       </div>
     </section>
-    <KeepModal/>
-    
+    <KeepModal />
   </div>
 </template>
 
@@ -41,5 +40,4 @@ async function getAllKeep() {
   columns: 300px;
   column-gap: 1rem;
 }
-
 </style>

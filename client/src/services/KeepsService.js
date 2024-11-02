@@ -5,7 +5,29 @@ import { Keep } from "@/models/Keep.js";
 
 class KeepsService
 {
+  async getMyKeeps(accountId) {
+    AppState.keeps = null
+    const response = await api.get(`api/profiles/${accountId}/keeps`)
+    logger.log('get user keeps', response.data)
+    AppState.keeps = response.data.map(keep => new Keep(keep))
+  }
+
+  async getKeepById(keepId) {
+    AppState.activeKeep = null
+      const response = await api.get(`api/keeps/${keepId}`)
+      logger.log('get keep by id', response.data)
+      AppState.activeKeep = new Keep(response.data)
+  }
+  
+  async getPublicKeepById(vaultId) {
+    AppState.keeps = null
+    const response = await api.get(`api/vaults/${vaultId}/keeps`)
+    logger.log('get public keep by id', response.data)
+    AppState.keeps = response.data.map(keep => new Keep(keep))
+  }
+
   async getUserKeep(profileId) {
+    AppState.keeps = null
     const response = await api.get(`api/profiles/${profileId}/keeps`)
     logger.log('get user keeps', response.data)
     AppState.keeps = response.data.map(keep => new Keep(keep))
@@ -22,21 +44,17 @@ class KeepsService
   setKeep(keepProp) 
   {
     AppState.activeKeep = keepProp
+    
+    return
   }
   
-  async getKeepById(vaultId) 
-  { 
-    const response = await api.get(`api/vaults/${vaultId}/keeps`)
-    logger.log('get keep by id', response.data)
-    AppState.keeps = response.data.map(keep => new Keep(keep))
-  }
-
   async createKeep(keepData) 
   {
     const response = await api.post("api/keeps", keepData)
     logger.log('create keep', response.data)
     const newKeep = new Keep(response.data)
 
+    if(AppState.profiles?.id == newKeep.creatorId)
     AppState.keeps.push(newKeep)
   }
 

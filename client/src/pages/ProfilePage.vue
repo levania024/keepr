@@ -4,12 +4,13 @@ import VaultCard from '@/components/globals/VaultCard.vue';
 import { keepsService } from '@/services/KeepsService.js';
 import { profilesService } from '@/services/ProfilesService.js';
 import { vaultsService } from '@/services/VaultsService.js';
+import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
-const account = computed(() => AppState.account)
+const profile = computed(() => AppState.profiles)
 const keeps = computed(() => AppState.keeps)
 const vaults = computed(() => AppState.vaults)
 
@@ -34,6 +35,7 @@ async function getUserKeep() {
   }
   catch (error) {
     Pop.error(error);
+    logger.log(error)
   }
 }
 
@@ -43,6 +45,7 @@ async function getUserVault() {
   }
   catch (error) {
     Pop.error(error);
+    logger.log(error)
   }
 }
 </script>
@@ -50,19 +53,17 @@ async function getUserVault() {
 
 <template>
   <h1 class="text-center">Profile page</h1>
-  <div v-if="account">
-    <div class="container">
+  <div>
+    <div v-if="profile" class="container">
       <section class="row position-relative">
-        <img class="creatorImg rounded-4" :src="account.coverImg" :alt="account.name">
-        <div class="d-flex justify-content-center">
-          <div class="my-4">
-            <img :src="account.picture" :alt="account.name" class="profileImg">
+        <img class="creatorImg rounded-4" :src="profile.coverImg" :alt="profile.name">
+          <div class="my-4 d-flex justify-content-center align-items-center">
+            <img :src="profile.picture" :alt="profile.name" class="profileImg">
           </div>
-        </div>
       </section>
 
       <div class="text-center">
-        <h2>{{ account.name }}</h2>
+        <h2>{{ profile.name }}</h2>
         <p>{{ vaults?.length }} vault |
           {{ keeps?.length }} keeps
         </p>
@@ -75,7 +76,7 @@ async function getUserVault() {
         <div v-for="vault in vaults" :key="vault.id" class="col-lg-3 mb-3">
           <VaultCard :vaultProp="vault" />
         </div>
-        
+
         <div class="col-lg-12">
           <h3>Keep</h3>
           <section class="grid-container mt-3">
@@ -103,6 +104,8 @@ async function getUserVault() {
 }
 
 .profileImg {
+  display: block;
+  margin: 0 auto;
   position: absolute;
   bottom: 0;
   height: 12dvh;

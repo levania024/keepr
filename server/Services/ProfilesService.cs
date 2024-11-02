@@ -13,7 +13,6 @@ public class ProfilesService
     internal Profile GetUserProfile(string profileId)
     {
         Profile profile = _profilesRepository.GetUserProfile(profileId);
-        // if(profile.Id != userId) throw new Exception("not your profile");
 
         return profile;
     }

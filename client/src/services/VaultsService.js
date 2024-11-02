@@ -16,13 +16,13 @@ class VaultsService
       const response = await api.put(`api/vaults/${vaultId}`,vaultData)
       logger.log('update vault ', response.data)
       const newVault = new Vault(response.data)
-      AppState.vaults.push(newVault)
+      AppState.vault = newVault
     }
 
     async getMyVault() {
       const response = await api.get('account/vaults')
       logger.log('get my vaults', response.data)
-      AppState.vaults = response.data.map(vault => new Vault(vault))
+      AppState.myVaults = response.data.map(vault => new Vault(vault))
     }
 
     async getUserVault(profileId) {
@@ -45,6 +45,8 @@ class VaultsService
       const response = await api.post("api/vaults", vaultData)
       logger.log('create vaults', response.data)
       const newVault = new Vault(response.data)
+      
+      if(AppState.profiles?.id == newVault.creatorId)
       AppState.vaults.push(newVault)
     }
 }

@@ -1,5 +1,6 @@
 <script setup>
 import { keepsService } from '@/services/KeepsService.js';
+import { logger } from '@/utils/Logger.js';
 import Pop from '@/utils/Pop.js';
 import { ref } from 'vue';
 
@@ -17,9 +18,12 @@ async function createKeep() {
             img: '',
             description: ''
         }
+
+        Pop.success(`Keep ${editableData.value.name} is created`)
     }
     catch (error) {
         Pop.error(error);
+        logger.log(error)
     }
 }
 </script>
@@ -27,21 +31,21 @@ async function createKeep() {
 <template>
     <form @submit.prevent="createKeep()">
         <div class="form-floating mb-3">
-            <input v-model="editableData.name" type="text" class="form-control-plaintext" id="Name" required
+            <input v-model="editableData.name" type="text" class="form-control-plaintext" id="name" required
                 maxlength="255">
-            <label for="floatingEmptyPlaintextInput">Name...</label>
+            <label for="name">Name...</label>
             <hr>
         </div>
         <div class="form-floating mb-3">
             <input v-model="editableData.img" type="url" class="form-control-plaintext" id="image" required
                 maxlength="1000">
-            <label for="floatingPlaintextInput">Image Url...</label>
+            <label for="image">Image Url...</label>
             <hr>
         </div>
         <div class="form-floating mb-3">
             <textarea v-model="editableData.description" type="Description" class="form-control-plaintext"
                 id="Description" required maxlength="1000"></textarea>
-            <label for="floatingPlaintextInput">Description...</label>
+            <label for="description">Description...</label>
             <hr>
         </div>
         <div class="text-end">

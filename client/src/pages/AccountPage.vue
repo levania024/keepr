@@ -4,14 +4,15 @@ import { AppState } from '../AppState.js';
 import KeepCard from '@/components/globals/KeepCard.vue';
 import Pop from '@/utils/Pop.js';
 import { vaultsService } from '@/services/VaultsService.js';
+import { keepsService } from '@/services/KeepsService.js';
 
 const account = computed(() => AppState.account)
 const keeps = computed(() => AppState.keeps)
-const vaults = computed(() => AppState.vaults)
+const vaults = computed(() => AppState.myVaults)
 
 onMounted(() => {
   getMyVault()
-
+  getMyKeeps()
 })
 
 async function getMyVault() {
@@ -23,7 +24,15 @@ async function getMyVault() {
   }
 }
 
-
+async function getMyKeeps() {
+  try {
+    // @ts-ignore
+    await keepsService.getMyKeeps(AppState.identity.id)
+  }
+  catch (error) {
+    Pop.error(error);
+  }
+}
 </script>
 
 <template>
@@ -43,7 +52,8 @@ async function getMyVault() {
                 </ul>
               </div>
             </div>
-            <div class="my-4 text-center">
+
+            <div class="my-2 d-flex justify-content-center">
               <img :src="account.picture" alt="" class="profileImg">
             </div>
           </div>
@@ -55,12 +65,14 @@ async function getMyVault() {
           </p>
         </div>
       </div>
+
       <div class="container">
         <section class="row g-4">
           <h3>Vault</h3>
           <div v-for="vault in vaults" :key="vault.id" class="col-lg-3">
             <VaultCard :vaultProp="vault" />
           </div>
+
           <div class="col-lg-12">
             <h3>Keep</h3>
             <section class="grid-container mt-3">
@@ -93,7 +105,7 @@ async function getMyVault() {
 .profileImg {
   position: absolute;
   bottom: 0;
-  height: 10dvh;
+  height: 12dvh;
   border-radius: 50%;
   aspect-ratio: 1/1;
   object-fit: cover;
