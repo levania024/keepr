@@ -21,12 +21,13 @@ export default defineConfig({
   },
   build: {
     sourcemap: false,
+    outDir: 'dist'
   },
   server: {
     port: 8080
   },
 
   // NOTE If deploying to gh-pages uncomment the line below (https://vitejs.dev/config/shared-options.html#base)
-  // base: '/keepr/'
+  base: '/keepr/'
 })
 
